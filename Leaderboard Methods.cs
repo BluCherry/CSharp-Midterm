@@ -1,6 +1,4 @@
-﻿public static class MainClass
-{
-    private static void WriteRunToFile(string username, int score, string path)
+private static void WriteRunToFile(string username, int score, string path)
     {
         if (!File.Exists(path))
         {
@@ -16,7 +14,7 @@
         }
     }
 
-    private static int GetLineCount(string path)
+private static int GetLineCount(string path)
     {
         if (!File.Exists(path))
         {
@@ -35,7 +33,7 @@
         return count;
     }
 
-    private static LeaderBoard[] ReadRunsFromFile(string path)
+private static LeaderBoard[] ReadRunsFromFile(string path)
     {
         if (!File.Exists(path))
         {
@@ -63,7 +61,7 @@
             return leaderboard;
         }
 
-    private static LeaderBoard[] Sort(LeaderBoard[] leaderboard)
+private static LeaderBoard[] Sort(LeaderBoard[] leaderboard)
     {
         for (int i = 0; i < leaderboard.Length - 1; i++)
         {
@@ -85,32 +83,3 @@
 
         return leaderboard;
     }
-
-    private static void Main()
-    {
-        string path = "scoreboard.csv";
-        string username = "i";
-        int score = 1;
-        //these two would be collected at beginning of run; standin values here
-
-        //at end of game
-        WriteRunToFile(username, score, path);
-
-        LeaderBoard[] leaderboard = ReadRunsFromFile(path);
-
-        LeaderBoard[] sortedBoard = Sort(leaderboard);
-
-        Console.WriteLine($"Top 5 Runs: \n");
-        for (int i = 0; i < 5; i++)
-        {
-            if (sortedBoard[i] == null)
-            {
-                Console.WriteLine("-");
-            }
-            else
-            {
-                Console.WriteLine(sortedBoard[i]);
-            }
-        }
-    }
-}
