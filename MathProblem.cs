@@ -1,4 +1,4 @@
-﻿public enum Difficulty
+lt ﻿public enum Difficulty
 {
     Easy,
     Medium,
@@ -222,7 +222,7 @@ public class MathProblem
         
 }
 
-/* Working Example
+/* Early Working Example
  * MathProblem easyProblems = EasyProblems();
    Console.WriteLine(easyProblems.ToString());
    
