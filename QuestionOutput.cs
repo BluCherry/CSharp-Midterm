@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections;
 using TMPro;
 using UnityEngine;
@@ -6,28 +6,36 @@ using static System.Runtime.CompilerServices.RuntimeHelpers;
 
 public class QuestionOutput : MonoBehaviour
 {
-    static public TextMeshProUGUI outputText;
-    static int correctCount = 0;
-    static int impossibleCount = 0;
-    static Boolean gameComplete = false;
+    public TextMeshProUGUI outputText;
+    int correctCount = 0;
+    int impossibleCount = 0;
+    Boolean gameComplete = false;
+    Difficulty difficulty = new Difficulty();
+    MathProblem problem = new MathProblem("", 0);
 
     void Start()
     {
-        Difficulty difficulty = Difficulty.Easy;
-        MathProblem problem = MathProblem.GetRandomExpression(difficulty);
+        difficulty = Difficulty.Easy;
+        problem = MathProblem.GetRandomExpression(difficulty);
         outputText.text = ($"{difficulty}: {problem} = ?");
     }
 
-    public static void CheckAnswer(string userAnswer, Difficulty difficulty, MathProblem problem)
+    void UpdateText()
     {
-        while (!gameComplete)
-        {
+        problem = MathProblem.GetRandomExpression(difficulty);
+        outputText.text = ($"{difficulty}: {problem} = ?");
+    }
+
+    public void CheckAnswer()
+    {
+        string userAnswer = QuestionInput.userAnswer;
+
             try
             {
                 int userNumber = int.Parse(userAnswer);
                 if (userNumber == problem.Answer)
                 {
-                    outputText.text = ($"Correct!\n");
+                    Debug.Log($"Correct!\n");
                     correctCount++;
 
                     if (difficulty == Difficulty.Impossible)
@@ -37,7 +45,6 @@ public class QuestionOutput : MonoBehaviour
                         {
                             outputText.text = ("🎉 You completed 3 Impossible problems! You won!");
                             gameComplete = true;
-                            continue; // Exit the loop
                         }
                     }
 
@@ -51,14 +58,13 @@ public class QuestionOutput : MonoBehaviour
                             if (correctCount == 3)
                             {
                                 outputText.text = ("You won!");
-                                break;
                             }
                         }
                     }
                 }
                 else
                 {
-                    outputText.text = ($"Incorrect.\n");
+                    Debug.Log($"Incorrect.\n");
                 }
             }
             catch (FormatException)
@@ -69,7 +75,20 @@ public class QuestionOutput : MonoBehaviour
             {
                 throw new Exception("Insufficient answer.\n");
             }
-        }
+
+        UpdateText();
+    }
+
+    IEnumerator ExampleCoroutine()
+    {
+        //Print the time of when the function is first called.
+        Debug.Log("Started Coroutine at timestamp : " + Time.time);
+
+        //yield on a new YieldInstruction that waits for 5 seconds.
+        yield return new WaitForSeconds(5);
+
+        //After we have waited 5 seconds print the time again.
+        Debug.Log("Finished Coroutine at timestamp : " + Time.time);
     }
 }
 
