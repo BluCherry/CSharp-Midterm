@@ -81,12 +81,11 @@ public class LeaderboardMethods : MonoBehaviour
         }
 
         int lineCount = GetLineCount(path);
-        LeaderBoard[] leaderboard = new LeaderBoard[lineCount - 1];
+        LeaderBoard[] leaderboard = new LeaderBoard[lineCount];
 
         using StreamReader reader = new StreamReader(path);
-        reader.ReadLine();
 
-        for (int i = 0; i < lineCount - 1; i++)
+        for (int i = 0; i < lineCount; i++)
         {
             string line = reader.ReadLine();
 
@@ -103,7 +102,7 @@ public class LeaderboardMethods : MonoBehaviour
 
     public static LeaderBoard[] Sort(LeaderBoard[] leaderboard)
     {
-        for (int i = 0; i < leaderboard.Length - 1; i++)
+        for (int i = 0; i < leaderboard.Length; i++)
         {
             int maxIndex = i;
             for (int j = i + 1; j < leaderboard.Length; j++)
@@ -115,12 +114,13 @@ public class LeaderboardMethods : MonoBehaviour
             }
             if (maxIndex != i)
             {
-                int temporary = leaderboard[maxIndex].Score;
-                leaderboard[maxIndex].Score = leaderboard[i].Score;
-                leaderboard[i].Score = temporary;
+                LeaderBoard temporary = leaderboard[maxIndex];
+                leaderboard[maxIndex] = leaderboard[i];
+                leaderboard[i] = temporary;
             }
         }
 
         return leaderboard;
     }
 }
+
