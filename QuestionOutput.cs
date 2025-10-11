@@ -12,7 +12,7 @@ public class QuestionOutput : MonoBehaviour
     public static int score = 0;
     int impossibleCount = 0;
     int lives = 3;
-    Boolean gameComplete = false;
+    public static Boolean gameComplete = false;
     Difficulty difficulty = new Difficulty();
     MathProblem problem = new MathProblem("", 0);
 
@@ -260,3 +260,4 @@ public class MathProblem
         }
     }
 }
+
