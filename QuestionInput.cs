@@ -7,18 +7,13 @@ public class QuestionInput : MonoBehaviour
     public static string userAnswer;
     public TMP_InputField inputField;
 
-    void Start()
-    {
-        
-    }
-
-    void Update()
-    {
-        
-    }
-
     public void ReadStringInput(string input)
     {
+        if (input == null || input == "")
+        {
+            throw new MissingComponentException("input cannot be null or empty");
+        }
+        
         userAnswer = input;
         Debug.Log(userAnswer);
         inputField.text = ""; // Clears the input field
@@ -29,3 +24,4 @@ public class QuestionInput : MonoBehaviour
         gameObject.SendMessage("CheckAnswer");
     }
 }
+
