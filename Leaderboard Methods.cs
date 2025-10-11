@@ -30,7 +30,7 @@ public class LeaderboardMethods : MonoBehaviour
                 }
                 else
                 {
-                    string line = ($"{sortedBoard[i].ToString()}\n");
+                    string line = ($"{sortedBoard[i]}\n");
                     text = text + line;
                 }
             }
@@ -123,4 +123,5 @@ public class LeaderboardMethods : MonoBehaviour
         return leaderboard;
     }
 }
+
 
