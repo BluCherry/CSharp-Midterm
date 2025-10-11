@@ -3,7 +3,7 @@
 A mathematics-based game, where you have to answer progressively more difficult arithmetic questions to get a higher score. Of stretch goals; a western theme in gameplay animation, and added challenges to contribute to said score- presented in a top five run scoreboard. 
 
 # Team
-Grenadine Groves, Nolan Worrell, Carson Kornstedt
+Grenadine Groves (BluCherry), Nolan Worrell (Codnex-Labs), Carson Kornstedt (Stormy-617)
 
 # Minimum Viable Product
 The minimum viable product of this project will satisfy the following criteria:
