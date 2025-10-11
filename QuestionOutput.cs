@@ -1,6 +1,7 @@
-﻿using System;
+using System;
 using System.Collections;
 using TMPro;
+using UnityEditor;
 using UnityEngine;
 using static System.Runtime.CompilerServices.RuntimeHelpers;
 
@@ -8,7 +9,9 @@ public class QuestionOutput : MonoBehaviour
 {
     public TextMeshProUGUI outputText;
     int correctCount = 0;
+    public static int score = 0;
     int impossibleCount = 0;
+    int lives = 3;
     Boolean gameComplete = false;
     Difficulty difficulty = new Difficulty();
     MathProblem problem = new MathProblem("", 0);
@@ -17,13 +20,22 @@ public class QuestionOutput : MonoBehaviour
     {
         difficulty = Difficulty.Easy;
         problem = MathProblem.GetRandomExpression(difficulty);
-        outputText.text = ($"{difficulty}: {problem} = ?");
+        outputText.text = $"{difficulty}: {problem} = ?";
     }
 
     void UpdateText()
     {
+        if (lives == 0)
+        {
+            gameComplete = true;
+            // Get a reference to the GameObject
+            GameObject gameObject = GameObject.Find("EventSystem");
+
+            // Send the message
+            gameObject.SendMessage("ChangeScene");
+        }
         problem = MathProblem.GetRandomExpression(difficulty);
-        outputText.text = ($"{difficulty}: {problem} = ?");
+        outputText.text = $"{difficulty}: {problem} = ?";
     }
 
     public void CheckAnswer()
@@ -37,6 +49,7 @@ public class QuestionOutput : MonoBehaviour
                 {
                     Debug.Log($"Correct!\n");
                     correctCount++;
+                    score++;
 
                     if (difficulty == Difficulty.Impossible)
                     {
@@ -45,7 +58,12 @@ public class QuestionOutput : MonoBehaviour
                         {
                             outputText.text = ("🎉 You completed 3 Impossible problems! You won!");
                             gameComplete = true;
-                        }
+                            // Get a reference to the GameObject
+                            GameObject gameObject = GameObject.Find("EventSystem");
+
+                            // Send the message
+                            gameObject.SendMessage("ChangeScene");
+                    }
                     }
 
                     if (correctCount >= 3 && difficulty != Difficulty.Impossible)
@@ -57,14 +75,20 @@ public class QuestionOutput : MonoBehaviour
                         {
                             if (correctCount == 3)
                             {
-                                outputText.text = ("You won!");
-                            }
+                                outputText.text = ("🎉 You completed 3 Impossible problems! You won!");
+                                // Get a reference to the GameObject
+                                GameObject gameObject = GameObject.Find("EventSystem");
+
+                                // Send the message
+                                gameObject.SendMessage("ChangeScene");
+                        }
                         }
                     }
                 }
                 else
                 {
                     Debug.Log($"Incorrect.\n");
+                    lives--;
                 }
             }
             catch (FormatException)
@@ -77,18 +101,6 @@ public class QuestionOutput : MonoBehaviour
             }
 
         UpdateText();
-    }
-
-    IEnumerator ExampleCoroutine()
-    {
-        //Print the time of when the function is first called.
-        Debug.Log("Started Coroutine at timestamp : " + Time.time);
-
-        //yield on a new YieldInstruction that waits for 5 seconds.
-        yield return new WaitForSeconds(5);
-
-        //After we have waited 5 seconds print the time again.
-        Debug.Log("Finished Coroutine at timestamp : " + Time.time);
     }
 }
 
