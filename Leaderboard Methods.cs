@@ -1,24 +1,64 @@
-private static void WriteRunToFile(string username, int score, string path)
+using System;
+using System.IO;
+using TMPro;
+using UnityEngine;
+
+public class LeaderboardMethods : MonoBehaviour
+{
+    public TextMeshProUGUI outputText;
+
+    void Start()
     {
-        if (!File.Exists(path))
+        string username = GetUsername.username;
+        int score = QuestionOutput.score;
+        string path = "scoreboard.csv";
+
+        WriteRunToFile(username, score, path);
+
+        LeaderBoard[] leaderboard = ReadRunsFromFile(path);
+
+        LeaderBoard[] sortedBoard = Sort(leaderboard);
+
+        string text = ($"-Top 5 Runs- \n");
+        for (int i = 0; i < 5; i++)
         {
-            using StreamWriter writer = new StreamWriter(path, true);
-            string line = string.Join(',', username, score);
-            writer.WriteLine(line);
+            if (sortedBoard.Length - 1 >= i)
+            {
+                if (sortedBoard[i] == null)
+                {
+                    text = text + "-\n";
+                }
+                else
+                {
+                    string line = ($"{sortedBoard[i].ToString()}\n");
+                    text = text + line;
+                }
+            }
+            else
+            {
+                text = text + "-\n";
+            }
         }
-        else
-        {
-            using StreamWriter writer = new StreamWriter(path, true);
-            string line = string.Join(',', username, score);
-            writer.WriteLine(line);
-        }
+
+        outputText.text = text;
     }
 
-private static int GetLineCount(string path)
+    public static void WriteRunToFile(string username, int score, string path)
+    {
+        
+        using StreamWriter writer = new StreamWriter(path, true);
+        string line = string.Join(',', username, score);
+        writer.WriteLine(line);
+        
+
+        Debug.Log("Data exported to: " + path);
+    }
+
+    private static int GetLineCount(string path)
     {
         if (!File.Exists(path))
         {
-        throw new FileNotFoundException("Cannot get line count of a missing file ", path);
+            throw new FileNotFoundException("Cannot get line count of a missing file ", path);
         }
 
         int count = 0;
@@ -33,7 +73,7 @@ private static int GetLineCount(string path)
         return count;
     }
 
-private static LeaderBoard[] ReadRunsFromFile(string path)
+    public static LeaderBoard[] ReadRunsFromFile(string path)
     {
         if (!File.Exists(path))
         {
@@ -56,30 +96,31 @@ private static LeaderBoard[] ReadRunsFromFile(string path)
             int score = int.Parse(columns[1]);
 
             leaderboard[i] = new LeaderBoard(username, score);
-            }
-
-            return leaderboard;
         }
 
-private static LeaderBoard[] Sort(LeaderBoard[] leaderboard)
+        return leaderboard;
+    }
+
+    public static LeaderBoard[] Sort(LeaderBoard[] leaderboard)
     {
         for (int i = 0; i < leaderboard.Length - 1; i++)
         {
-            int minIndex = i;
+            int maxIndex = i;
             for (int j = i + 1; j < leaderboard.Length; j++)
             {
-                if (leaderboard[minIndex].Score > leaderboard[j].Score)
+                if (leaderboard[maxIndex].Score < leaderboard[j].Score)
                 {
-                    minIndex = j;
+                    maxIndex = j;
                 }
             }
-            if (minIndex != i)
+            if (maxIndex != i)
             {
-                int temporary = leaderboard[minIndex].Score;
-                leaderboard[minIndex].Score = leaderboard[i].Score;
+                int temporary = leaderboard[maxIndex].Score;
+                leaderboard[maxIndex].Score = leaderboard[i].Score;
                 leaderboard[i].Score = temporary;
             }
         }
 
         return leaderboard;
     }
+}
