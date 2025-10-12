@@ -7,7 +7,9 @@ using static System.Runtime.CompilerServices.RuntimeHelpers;
 
 public class QuestionOutput : MonoBehaviour
 {
-    public TextMeshProUGUI outputText;
+    public TextMeshProUGUI question;
+    public TextMeshProUGUI livesDisplay;
+    public TextMeshProUGUI scoreDisplay;
     int correctCount = 0;
     public static int score = 0;
     int impossibleCount = 0;
@@ -20,7 +22,9 @@ public class QuestionOutput : MonoBehaviour
     {
         difficulty = Difficulty.Easy;
         problem = MathProblem.GetRandomExpression(difficulty);
-        outputText.text = $"{difficulty}: {problem} = ?";
+        question.text = $"{difficulty}: {problem} = ?";
+        livesDisplay.text = $"Lives: {lives}";
+        scoreDisplay.text = $"Score: {score}";
     }
 
     void UpdateText()
@@ -35,7 +39,9 @@ public class QuestionOutput : MonoBehaviour
             gameObject.SendMessage("ChangeScene");
         }
         problem = MathProblem.GetRandomExpression(difficulty);
-        outputText.text = $"{difficulty}: {problem} = ?";
+        question.text = $"{difficulty}: {problem} = ?";
+        livesDisplay.text = $"Lives: {lives}";
+        scoreDisplay.text = $"Score: {score}";
     }
 
     public void CheckAnswer()
@@ -56,7 +62,6 @@ public class QuestionOutput : MonoBehaviour
                         impossibleCount++;
                         if (impossibleCount >= 3)
                         {
-                            outputText.text = ("🎉 You completed 3 Impossible problems! You won!");
                             gameComplete = true;
                             // Get a reference to the GameObject
                             GameObject gameObject = GameObject.Find("EventSystem");
@@ -75,7 +80,6 @@ public class QuestionOutput : MonoBehaviour
                         {
                             if (correctCount == 3)
                             {
-                                outputText.text = ("🎉 You completed 3 Impossible problems! You won!");
                                 // Get a reference to the GameObject
                                 GameObject gameObject = GameObject.Find("EventSystem");
 
@@ -260,4 +264,5 @@ public class MathProblem
         }
     }
 }
+
 
