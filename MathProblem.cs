@@ -163,7 +163,7 @@ public class MathProblem
                         impossibleCount++;
                         if (impossibleCount >= 3)
                         {
-                            Console.WriteLine("🎉 You completed 3 Impossible problems! You won!");
+                            Console.WriteLine("You completed 3 Impossible problems! You won!");
                             gameComplete = true;
                             continue; // Exit the loop
                         }
